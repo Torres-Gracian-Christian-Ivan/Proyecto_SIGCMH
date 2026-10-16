@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head th:replace="~{plantillas/plantilla::head}"></head>
+
+<body>
+
+<div class="wrapper">
+
+    <aside th:replace="~{plantillas/plantilla::sidebar}"></aside>
+
+    <div class="content">
+
+        <header th:replace="~{plantillas/plantilla::header}"></header>
+
+        <main class="main-content">
+
+            <div class="card shadow">
+
+                <div class="card-header">
+                    <h3>Información del Paciente</h3>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+                            <label class="fw-bold">ID</label>
+                            <p th:text="${paciente.idPaciente}"></p>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="fw-bold">Nombre completo</label>
+                            <p th:text="${paciente.nombreCompleto}"></p>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="fw-bold">Número de identificación</label>
+                            <p th:text="${paciente.numeroIdentificacion}"></p>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="fw-bold">Fecha de nacimiento</label>
+                            <p th:text="${paciente.fechaNacimiento}"></p>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="fw-bold">Género</label>
+                            <p th:text="${paciente.genero}"></p>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="fw-bold">Teléfono</label>
+                            <p th:text="${paciente.telefono}"></p>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="fw-bold">Correo</label>
+                            <p th:text="${paciente.email}"></p>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="fw-bold">Dirección</label>
+                            <p th:text="${paciente.direccion}"></p>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="fw-bold">Activo</label>
+                            <span class="badge bg-success"
+                                  th:if="${paciente.activo}">
+                                Sí
+                            </span>
+
+                            <span class="badge bg-danger"
+                                  th:unless="${paciente.activo}">
+                                No
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <a th:href="@{/pacientes}" class="btn btn-secondary">
+                        Regresar
+                    </a>
+
+                </div>
+
+            </div>
+
+        </main>
+
+        <footer th:replace="~{plantillas/plantilla::footer}"></footer>
+
+    </div>
+
+</div>
+
+<div th:replace="~{plantillas/plantilla::scripts}"></div>
+
+</body>
+</html>

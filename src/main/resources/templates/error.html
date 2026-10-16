@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Acceso denegado - SIGCMH</title>
+
+    <link rel="stylesheet"
+          th:href="@{/bootstrap/css/bootstrap.min.css}">
+
+</head>
+
+<body class="bg-light">
+
+<div class="container">
+
+    <div class="row
+                justify-content-center
+                align-items-center"
+         style="min-height: 100vh;">
+
+        <div class="col-md-7 col-lg-5">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body
+                            text-center
+                            p-5">
+
+
+                    <h1 class="display-4
+                               text-danger
+                               fw-bold">
+
+                        403
+
+                    </h1>
+
+
+                    <h3 class="mb-3">
+
+                        Acceso denegado
+
+                    </h3>
+
+
+                    <p class="text-muted">
+
+                        No cuentas con los permisos
+                        necesarios para acceder a
+                        esta sección del sistema.
+
+                    </p>
+
+
+                    <p class="text-muted">
+
+                        Si necesitas realizar esta
+                        operación, contacta a un
+                        usuario con permisos de
+                        administrador.
+
+                    </p>
+
+
+                    <div class="mt-4">
+
+                        <a th:href="@{/}"
+                           class="btn btn-primary">
+
+                            Regresar al inicio
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Reporte general - SIGCMH</title>
+
+    <link rel="stylesheet"
+          th:href="@{/bootstrap/css/bootstrap.min.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/tema/miestilo.css}">
+
+</head>
+
+<body>
+
+<div class="container-fluid py-4">
+
+    <!-- =========================
+         Título
+         ========================= -->
+    <div class="mb-4">
+
+        <h2>
+            Reporte general de citas
+        </h2>
+
+        <p class="text-muted">
+            Consulte las citas registradas utilizando uno o varios filtros.
+        </p>
+
+    </div>
+
+
+    <!-- =========================
+         Filtros
+         ========================= -->
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-header">
+            Filtros de búsqueda
+        </div>
+
+        <div class="card-body">
+
+            <form th:action="@{/reportes}"
+                  th:object="${filtros}"
+                  method="get">
+
+                <div class="row g-3">
+
+
+                    <!-- Fecha -->
+                    <div class="col-md-4 col-lg-2">
+
+                        <label for="fecha"
+                               class="form-label">
+                            Fecha
+                        </label>
+
+                        <input type="date"
+                               id="fecha"
+                               th:field="*{fecha}"
+                               class="form-control">
+
+                    </div>
+
+
+                    <!-- Médico -->
+                    <div class="col-md-4 col-lg-3">
+
+                        <label for="medico"
+                               class="form-label">
+                            Médico
+                        </label>
+
+                        <select id="medico"
+                                th:field="*{idMedico}"
+                                class="form-select">
+
+                            <option value="">
+                                Todos
+                            </option>
+
+                            <option th:each="medico : ${medicos}"
+                                    th:value="${medico.id}"
+                                    th:text="${medico.nombreCompleto}">
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Paciente -->
+                    <div class="col-md-4 col-lg-3">
+
+                        <label for="paciente"
+                               class="form-label">
+                            Paciente
+                        </label>
+
+                        <select id="paciente"
+                                th:field="*{idPaciente}"
+                                class="form-select">
+
+                            <option value="">
+                                Todos
+                            </option>
+
+                            <option th:each="paciente : ${pacientes}"
+                                    th:value="${paciente.idPaciente}"
+                                    th:text="${paciente.nombreCompleto}">
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Estado -->
+                    <div class="col-md-4 col-lg-2">
+
+                        <label for="estado"
+                               class="form-label">
+                            Estado
+                        </label>
+
+                        <select id="estado"
+                                th:field="*{idEstado}"
+                                class="form-select">
+
+                            <option value="">
+                                Todos
+                            </option>
+
+                            <option th:each="estado : ${estados}"
+                                    th:value="${estado.id}"
+                                    th:text="${estado.nombre}">
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Especialidad -->
+                    <div class="col-md-4 col-lg-3">
+
+                        <label for="especialidad"
+                               class="form-label">
+                            Especialidad
+                        </label>
+
+                        <select id="especialidad"
+                                th:field="*{idEspecialidad}"
+                                class="form-select">
+
+                            <option value="">
+                                Todas
+                            </option>
+
+                            <option th:each="especialidad : ${especialidades}"
+                                    th:value="${especialidad.id}"
+                                    th:text="${especialidad.nombre}">
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Consultorio -->
+                    <div class="col-md-4 col-lg-3">
+
+                        <label for="consultorio"
+                               class="form-label">
+                            Consultorio
+                        </label>
+
+                        <select id="consultorio"
+                                th:field="*{idConsultorio}"
+                                class="form-select">
+
+                            <option value="">
+                                Todos
+                            </option>
+
+                            <option th:each="consultorio : ${consultorios}"
+                                    th:value="${consultorio.id}"
+                                    th:text="${consultorio.numero}">
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Botones -->
+                <div class="mt-4 d-flex gap-2">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
+                        Buscar
+
+                    </button>
+
+                    <a th:href="@{/reportes}"
+                       class="btn btn-secondary">
+
+                        Limpiar filtros
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         Resultados
+         ========================= -->
+    <div class="card shadow-sm">
+
+        <div class="card-header d-flex
+                    justify-content-between
+                    align-items-center">
+
+            <span>
+                Resultados
+            </span>
+
+            <span class="badge bg-secondary"
+                  th:text="${#lists.size(resultados)} + ' registros'">
+                0 registros
+            </span>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <!-- Sin resultados -->
+            <div th:if="${#lists.isEmpty(resultados)}"
+                 class="alert alert-info mb-0">
+
+                No se encontraron citas con los filtros seleccionados.
+
+            </div>
+
+
+            <!-- Tabla -->
+            <div th:unless="${#lists.isEmpty(resultados)}"
+                 class="table-responsive">
+
+                <table class="table
+                              table-striped
+                              table-hover
+                              align-middle">
+
+                    <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Fecha y hora</th>
+
+                        <th>Paciente</th>
+
+                        <th>Médico</th>
+
+                        <th>Especialidad</th>
+
+                        <th>Consultorio</th>
+
+                        <th>Estado</th>
+
+                        <th>Motivo</th>
+
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    <tr th:each="resultado : ${resultados}">
+
+                        <td th:text="${resultado.idCita}">
+                            1
+                        </td>
+
+                        <td th:text="${#temporals.format(
+                                        resultado.fechaHora,
+                                        'dd/MM/yyyy HH:mm'
+                                      )}">
+                            05/10/2026 10:00
+                        </td>
+
+                        <td th:text="${resultado.paciente}">
+                            Paciente
+                        </td>
+
+                        <td th:text="${resultado.medico}">
+                            Médico
+                        </td>
+
+                        <td th:text="${resultado.especialidad}">
+                            Especialidad
+                        </td>
+
+                        <td th:text="${resultado.consultorio}">
+                            Consultorio
+                        </td>
+
+                        <td>
+
+                            <span class="badge bg-secondary"
+                                  th:text="${resultado.estado}">
+
+                                Estado
+
+                            </span>
+
+                        </td>
+
+                        <td th:text="${resultado.motivoConsulta}">
+                            Motivo
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Regresar -->
+    <div class="mt-4">
+
+        <a th:href="@{/}"
+           class="btn btn-outline-secondary">
+
+            Regresar al inicio
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<script th:src="@{/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+</body>
+
+</html>

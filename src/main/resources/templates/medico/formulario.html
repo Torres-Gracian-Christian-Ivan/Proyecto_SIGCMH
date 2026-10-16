@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head th:replace="~{plantillas/plantilla::head}"></head>
+
+<body>
+
+<div class="wrapper">
+
+    <aside th:replace="~{plantillas/plantilla::sidebar}"></aside>
+
+    <div class="content">
+
+        <header th:replace="~{plantillas/plantilla::header}"></header>
+
+        <main class="main-content">
+
+            <nav aria-label="breadcrumb" class="mb-3">
+                <ol class="breadcrumb">
+
+                    <li class="breadcrumb-item">
+                        <a th:href="@{/}">Inicio</a>
+                    </li>
+
+                    <li class="breadcrumb-item">
+                        <a th:href="@{/medicos}">Médicos</a>
+                    </li>
+
+                    <li class="breadcrumb-item active">
+
+                        <span th:if="${medico.id == null}">
+                            Registrar
+                        </span>
+
+                        <span th:unless="${medico.id == null}">
+                            Editar
+                        </span>
+
+                    </li>
+
+                </ol>
+            </nav>
+
+            <div class="card shadow">
+
+                <div class="card-header">
+
+                    <h2 class="mb-0"
+                        th:text="${medico.id == null} ?
+                        'Registrar Médico' :
+                        'Editar Médico'">
+                    </h2>
+
+                </div>
+
+                <div class="card-body">
+
+                    <p class="text-muted">
+                        Complete la siguiente información del médico.
+                    </p>
+
+                    <hr>
+
+                    <div class="alert alert-danger"
+                         th:if="${error}"
+                         th:text="${error}">
+                    </div>
+
+                    <form th:action="@{/medicos/guardar}"
+                          th:object="${medico}"
+                          method="post">
+
+                        <input type="hidden"
+                               th:field="*{id}">
+
+                        <div class="row">
+
+                            <!-- Nombre -->
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+                                    Nombre completo
+                                </label>
+
+                                <input
+                                        type="text"
+                                        class="form-control"
+                                        th:field="*{nombreCompleto}">
+
+                                <div class="text-danger"
+                                     th:errors="*{nombreCompleto}">
+                                </div>
+
+                            </div>
+
+                            <!-- Identificación -->
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+                                    Número de identificación
+                                </label>
+
+                                <input
+                                        type="text"
+                                        class="form-control"
+                                        th:field="*{numeroIdentificacion}">
+
+                                <div class="text-danger"
+                                     th:errors="*{numeroIdentificacion}">
+                                </div>
+
+                            </div>
+
+                            <!-- Teléfono -->
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+                                    Teléfono
+                                </label>
+
+                                <input
+                                        type="text"
+                                        class="form-control"
+                                        th:field="*{telefono}">
+
+                                <div class="text-danger"
+                                     th:errors="*{telefono}">
+                                </div>
+
+                            </div>
+
+                            <!-- Correo -->
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+                                    Correo electrónico
+                                </label>
+
+                                <input
+                                        type="email"
+                                        class="form-control"
+                                        th:field="*{email}">
+
+                                <div class="text-danger"
+                                     th:errors="*{email}">
+                                </div>
+
+                            </div>
+
+                            <!-- Especialidad -->
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+                                    Especialidad
+                                </label>
+
+                                <select class="form-select"
+                                        th:field="*{idEspecialidad}">
+
+                                    <option value="">
+                                        Seleccione...
+                                    </option>
+
+                                    <option
+                                            th:each="e : ${especialidades}"
+                                            th:value="${e.id}"
+                                            th:text="${e.nombre}">
+                                    </option>
+
+                                </select>
+
+                                <div class="text-danger"
+                                     th:errors="*{idEspecialidad}">
+                                </div>
+
+                            </div>
+
+                            <!-- Consultorio -->
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+                                    Consultorio
+                                </label>
+
+                                <select class="form-select"
+                                        th:field="*{idConsultorio}">
+
+                                    <option value="">
+                                        Seleccione...
+                                    </option>
+
+                                    <option
+                                            th:each="c : ${consultorios}"
+                                            th:value="${c.id}"
+                                            th:text="${c.numero}">
+                                    </option>
+
+                                </select>
+
+                                <div class="text-danger"
+                                     th:errors="*{idConsultorio}">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <hr>
+
+                        <div class="text-end">
+
+                            <a th:href="@{/medicos}"
+                               class="btn btn-secondary">
+
+                                Cancelar
+
+                            </a>
+
+                            <button
+                                    type="submit"
+                                    class="btn btn-primary">
+
+                                Guardar
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </main>
+
+        <footer th:replace="~{plantillas/plantilla::footer}"></footer>
+
+    </div>
+
+</div>
+
+<div th:replace="~{plantillas/plantilla::scripts}"></div>
+
+</body>
+
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title th:text="${usuario.id == null}
+            ? 'Nuevo usuario - SIGCMH'
+            : 'Editar usuario - SIGCMH'">
+    </title>
+
+    <link rel="stylesheet"
+          th:href="@{/bootstrap/css/bootstrap.min.css}">
+
+</head>
+
+<body>
+
+<div class="container mt-4">
+
+    <div class="card">
+
+        <div class="card-header">
+
+            <h4 class="mb-0"
+                th:text="${usuario.id == null}
+                    ? 'Nuevo usuario'
+                    : 'Editar usuario'">
+            </h4>
+
+        </div>
+
+
+        <div class="card-body">
+
+
+            <form th:action="@{/usuarios/guardar}"
+                  th:object="${usuario}"
+                  method="post">
+
+
+                <!-- ID -->
+
+                <input type="hidden"
+                       th:field="*{id}">
+
+
+                <!-- NOMBRE -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+
+                        Nombre completo
+
+                    </label>
+
+
+                    <input type="text"
+                           class="form-control"
+                           th:field="*{nombreCompleto}">
+
+
+                    <div class="text-danger"
+                         th:if="${#fields.hasErrors('nombreCompleto')}"
+                         th:errors="*{nombreCompleto}">
+                    </div>
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+
+                        Correo electrónico
+
+                    </label>
+
+
+                    <input type="email"
+                           class="form-control"
+                           th:field="*{email}">
+
+
+                    <div class="text-danger"
+                         th:if="${#fields.hasErrors('email')}"
+                         th:errors="*{email}">
+                    </div>
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="mb-3">
+
+                    <label class="form-label"
+                           th:text="${usuario.id == null}
+                                ? 'Contraseña'
+                                : 'Nueva contraseña'">
+                    </label>
+
+
+                    <input type="password"
+                           class="form-control"
+                           th:field="*{passwordHash}"
+                           autocomplete="new-password">
+
+
+                    <div th:if="${usuario.id != null}"
+                         class="form-text">
+
+                        Déjala vacía para conservar
+                        la contraseña actual.
+
+                    </div>
+
+
+                    <div class="text-danger"
+                         th:if="${#fields.hasErrors('passwordHash')}"
+                         th:errors="*{passwordHash}">
+                    </div>
+
+                </div>
+
+
+                <!-- PERFIL -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+
+                        Perfil
+
+                    </label>
+
+
+                    <select class="form-select"
+                            th:field="*{idPerfil}">
+
+                        <option value="">
+
+                            Selecciona un perfil
+
+                        </option>
+
+
+                        <option th:each="perfil : ${perfiles}"
+                                th:value="${perfil.id}"
+                                th:text="${perfil.nombre}">
+                        </option>
+
+                    </select>
+
+
+                    <div class="text-danger"
+                         th:if="${#fields.hasErrors('idPerfil')}"
+                         th:errors="*{idPerfil}">
+                    </div>
+
+                </div>
+
+
+                <!-- ACTIVO -->
+
+                <div class="mb-3 form-check"
+                     th:if="${usuario.id != null}">
+
+                    <input type="checkbox"
+                           class="form-check-input"
+                           th:field="*{activo}">
+
+                    <label class="form-check-label">
+
+                        Usuario activo
+
+                    </label>
+
+                </div>
+
+
+                <!-- BOTONES -->
+
+                <div class="d-flex gap-2">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
+                        Guardar
+
+                    </button>
+
+
+                    <a th:href="@{/usuarios}"
+                       class="btn btn-secondary">
+
+                        Cancelar
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

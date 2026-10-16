@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="es">
+
+<head th:replace="~{plantillas/plantilla::head}"></head>
+
+<body>
+
+<div class="wrapper">
+
+    <aside th:replace="~{plantillas/plantilla::sidebar}"></aside>
+
+    <div class="content">
+
+        <header th:replace="~{plantillas/plantilla::header}"></header>
+
+        <main class="main-content">
+
+            <div class="card shadow">
+
+                <div class="card-body">
+
+                    <h2>
+
+                        <i class="bi bi-clock-fill"></i>
+
+                        <span th:if="${horario.id == null}">
+                            Registrar horario
+                        </span>
+
+                        <span th:unless="${horario.id == null}">
+                            Editar horario
+                        </span>
+
+                    </h2>
+
+                    <hr>
+
+                    <div th:if="${error}"
+                         class="alert alert-warning"
+                         th:text="${error}">
+                    </div>
+
+                    <form th:action="@{/medicos/{idMedico}/horarios/guardar(idMedico=${idMedico})}"
+                          th:object="${horario}"
+                          method="post">
+
+
+                        <input type="hidden"
+                               th:field="*{id}">
+
+
+                        <input type="hidden"
+                               th:field="*{idMedico}">
+
+                        <!-- DÍA - SOLO AL CREAR -->
+                        <div class="mb-3" th:if="${horario.id == null}">
+
+                            <label class="form-label">
+                                Día de la semana
+                            </label>
+
+                            <select class="form-select"
+                                    th:field="*{diaSemana}">
+
+                                <option value="">
+                                    Seleccione un día
+                                </option>
+
+                                <option value="1">Lunes</option>
+                                <option value="2">Martes</option>
+                                <option value="3">Miércoles</option>
+                                <option value="4">Jueves</option>
+                                <option value="5">Viernes</option>
+                                <option value="6">Sábado</option>
+                                <option value="7">Domingo</option>
+
+                            </select>
+
+                            <div class="text-danger"
+                                 th:if="${#fields.hasErrors('diaSemana')}"
+                                 th:errors="*{diaSemana}">
+                            </div>
+
+                        </div>
+
+
+                        <!-- DÍA - SOLO AL EDITAR -->
+                        <div class="mb-3" th:unless="${horario.id == null}">
+
+                            <label class="form-label">
+                                Día de la semana
+                            </label>
+
+                            <input type="text"
+                                   class="form-control"
+                                   th:value="${diasSemana[horario.diaSemana]}"
+                                   readonly>
+
+                            <input type="hidden"
+                                   th:field="*{diaSemana}">
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Hora de inicio
+                            </label>
+
+                            <input type="time"
+                                   class="form-control"
+                                   th:field="*{horaInicio}">
+
+                            <div class="text-danger"
+                                 th:if="${#fields.hasErrors('horaInicio')}"
+                                 th:errors="*{horaInicio}">
+                            </div>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Hora de finalización
+                            </label>
+
+                            <input type="time"
+                                   class="form-control"
+                                   th:field="*{horaFin}">
+
+                            <div class="text-danger"
+                                 th:if="${#fields.hasErrors('horaFin')}"
+                                 th:errors="*{horaFin}">
+                            </div>
+
+                        </div>
+
+
+                        <!-- ACTIVO -->
+                        <div class="form-check mb-3">
+
+                            <input type="checkbox"
+                                   class="form-check-input"
+                                   th:field="*{activo}">
+
+                            <label class="form-check-label">
+                                Horario activo
+                            </label>
+
+                        </div>
+
+
+                        <button type="submit"
+                                class="btn btn-success">
+
+                            Guardar
+
+                        </button>
+
+
+                        <a th:href="@{/medicos/{idMedico}/horarios(idMedico=${idMedico})}"
+                           class="btn btn-secondary">
+
+                            Cancelar
+
+                        </a>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </main>
+
+        <footer th:replace="~{plantillas/plantilla::footer}"></footer>
+
+    </div>
+
+</div>
+
+<div th:replace="~{plantillas/plantilla::scripts}"></div>
+
+</body>
+</html>

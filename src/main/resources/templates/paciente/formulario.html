@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head th:replace="~{plantillas/plantilla::head}"></head>
+
+<body>
+
+<div class="wrapper">
+
+    <aside th:replace="~{plantillas/plantilla::sidebar}"></aside>
+
+    <div class="content">
+
+        <header th:replace="~{plantillas/plantilla::header}"></header>
+
+        <main class="main-content">
+
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb" class="mb-3">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a th:href="@{/}">Inicio</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a th:href="@{/pacientes}">Pacientes</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+
+                        <span th:if="${paciente.idPaciente == null}">
+                            Registrar
+                        </span>
+
+                        <span th:unless="${paciente.idPaciente == null}">
+                            Editar
+                        </span>
+
+                    </li>
+                </ol>
+            </nav>
+
+            <div class="card shadow">
+
+                <div class="card-header">
+
+                    <h2 class="mb-0"
+                        th:text="${paciente.idPaciente == null} ?
+                        'Registrar Paciente' :
+                        'Editar Paciente'">
+                    </h2>
+
+                </div>
+
+                <div class="card-body">
+
+                    <p class="text-muted">
+                        Complete la siguiente información del paciente.
+                    </p>
+
+                    <hr>
+                    <!-- Mensaje de error -->
+                    <div class="alert alert-danger"
+                         th:if="${error}"
+                         th:text="${error}">
+                    </div>
+
+                    <form th:action="@{/pacientes/guardar}"
+                          th:object="${paciente}"
+                          method="post">
+
+                        <input type="hidden" th:field="*{idPaciente}">
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    Nombre completo
+                                </label>
+
+                                <input
+                                        type="text"
+                                        class="form-control"
+                                        th:field="*{nombreCompleto}">
+
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+                                    Número de identificación
+                                </label>
+
+                                <input
+                                        type="text"
+                                        class="form-control"
+                                        th:field="*{numeroIdentificacion}">
+
+                            </div>
+
+                            <!-- fechaa -->
+                            <div class="col-md-4 mb-3">
+
+                                <label class="form-label">
+                                    Fecha de nacimiento
+                                </label>
+
+                                <input
+                                        type="date"
+                                        class="form-control"
+                                        th:field="*{fechaNacimiento}">
+
+                            </div>
+
+                            <!-- genero -->
+                            <div class="col-md-4 mb-3">
+
+                                <label class="form-label">
+                                    Género
+                                </label>
+
+                                <select class="form-select" th:field="*{idGenero}">
+
+                                    <option value="">Seleccione...</option>
+
+                                    <option
+                                            th:each="g : ${generos}"
+                                            th:value="${g.idGenero}"
+                                            th:text="${g.nombre}">
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <!-- tel -->
+                            <div class="col-md-4 mb-3">
+
+                                <label class="form-label">
+                                    Teléfono
+                                </label>
+
+                                <input
+                                        type="text"
+                                        class="form-control"
+                                        th:field="*{telefono}">
+
+                            </div>
+
+                            <!-- Correo -->
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+                                    Correo electrónico
+                                </label>
+
+                                <input
+                                        type="email"
+                                        class="form-control"
+                                        th:field="*{email}">
+
+                            </div>
+
+                            <!-- dir -->
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+                                    Dirección
+                                </label>
+
+                                <input
+                                        type="text"
+                                        class="form-control"
+                                        th:field="*{direccion}">
+
+                            </div>
+
+                        </div>
+
+                        <hr>
+
+                        <div class="text-end">
+
+                            <a th:href="@{/pacientes}"
+                               class="btn btn-secondary">
+
+                                Cancelar
+
+                            </a>
+
+                            <button
+                                    type="submit"
+                                    class="btn btn-primary">
+
+                                Guardar
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </main>
+
+        <footer th:replace="~{plantillas/plantilla::footer}"></footer>
+
+    </div>
+
+</div>
+
+<div th:replace="~{plantillas/plantilla::scripts}"></div>
+
+</body>
+</html>

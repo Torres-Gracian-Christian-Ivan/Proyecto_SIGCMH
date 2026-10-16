@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head th:replace="~{plantillas/plantilla::head}"></head>
+
+<body>
+
+<div class="wrapper">
+
+    <aside th:replace="~{plantillas/plantilla::sidebar}"></aside>
+
+    <div class="content">
+
+        <header th:replace="~{plantillas/plantilla::header}"></header>
+
+        <main class="main-content">
+
+            <div class="card shadow">
+
+                <div class="card-body">
+
+                    <!-- Encabezado -->
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+
+                        <h2>
+                            <i class="bi bi-person-lines-fill"></i>
+                            Pacientes registrados
+                        </h2>
+
+                        <a th:href="@{/pacientes/nuevo}"
+                           class="btn btn-success">
+                            Nuevo paciente
+                        </a>
+
+                    </div>
+
+                    <!-- Mensaje de éxito -->
+                    <div th:if="${success}"
+                         class="alert alert-success alert-dismissible fade show"
+                         role="alert">
+
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span th:text="${success}"></span>
+
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="alert">
+                        </button>
+
+                    </div>
+
+                    <!-- Mensaje de error -->
+                    <div th:if="${error}"
+                         class="alert alert-danger alert-dismissible fade show"
+                         role="alert">
+
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        <span th:text="${error}"></span>
+
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="alert">
+                        </button>
+
+                    </div>
+
+                    <p class="text-muted">
+                        A continuación se muestra el listado de pacientes registrados
+                        en el sistema.
+                    </p>
+
+                    <hr>
+
+                    <table class="table table-hover table-bordered align-middle">
+
+                        <thead class="table-primary">
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Identificación</th>
+                            <th>Teléfono</th>
+                            <th>Correo</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                        <tr th:each="paciente : ${pacientes}">
+
+                            <td th:text="${paciente.idPaciente}"></td>
+
+                            <td th:text="${paciente.nombreCompleto}"></td>
+
+                            <td th:text="${paciente.numeroIdentificacion}"></td>
+
+                            <td th:text="${paciente.telefono}"></td>
+
+                            <td th:text="${paciente.email}"></td>
+
+                            <td class="text-center">
+
+                                <a th:href="@{/pacientes/ver/{id}(id=${paciente.idPaciente})}"
+                                   class="btn btn-info btn-sm">
+                                    Ver
+                                </a>
+
+                                <a th:href="@{/pacientes/editar/{id}(id=${paciente.idPaciente})}"
+                                   class="btn btn-warning btn-sm">
+                                    Editar
+                                </a>
+
+                                <a th:href="@{/pacientes/eliminar/{id}(id=${paciente.idPaciente})}"
+                                   class="btn btn-danger btn-sm"
+                                   onclick="return confirm('¿Desea eliminar este paciente?');">
+                                    Eliminar
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </main>
+
+        <footer th:replace="~{plantillas/plantilla::footer}"></footer>
+
+    </div>
+
+</div>
+
+<div th:replace="~{plantillas/plantilla::scripts}"></div>
+
+</body>
+</html>

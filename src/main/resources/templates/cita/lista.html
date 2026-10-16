@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head th:replace="~{plantillas/plantilla::head}"></head>
+
+<body>
+
+<div class="wrapper">
+
+    <aside th:replace="~{plantillas/plantilla::sidebar}"></aside>
+
+    <div class="content">
+
+        <header th:replace="~{plantillas/plantilla::header}"></header>
+
+        <main class="main-content">
+
+            <div class="card shadow">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+
+                        <h2>
+                            <i class="bi bi-calendar-check"></i>
+                            Citas médicas
+                        </h2>
+
+                        <a th:href="@{/citas/nuevo}"
+                           class="btn btn-success">
+                            Nueva cita
+                        </a>
+
+                    </div>
+
+                    <p class="text-muted">
+                        A continuación se muestran las citas médicas registradas en el sistema.
+                    </p>
+
+                    <hr>
+
+                    <table class="table table-hover table-bordered align-middle">
+
+                        <thead class="table-primary">
+
+                        <tr>
+
+                            <th>ID</th>
+                            <th>Paciente</th>
+                            <th>Médico</th>
+                            <th>Fecha y hora</th>
+                            <th>Estado</th>
+                            <th class="text-center">Acciones</th>
+
+                        </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                        <tr th:each="cita : ${citas}">
+
+                            <td th:text="${cita.id}"></td>
+
+                            <td th:text="${cita.nombrePaciente}"></td>
+
+                            <td th:text="${cita.nombreMedico}"></td>
+
+                            <td th:text="${#temporals.format(cita.fechaHora,'dd MMM yyyy - HH:mm')}"></td>
+
+                            <td>
+
+                                <span class="badge"
+                                      th:text="${cita.estado}"
+                                      th:classappend="
+                                        ${cita.estado == 'Programada'} ? ' bg-primary' :
+                                        (${cita.estado == 'Atendida'} ? ' bg-success' :
+                                        (${cita.estado == 'Cancelada'} ? ' bg-danger' :
+                                        (${cita.estado == 'En espera'} ? ' bg-warning text-dark' :
+                                        ' bg-secondary')))">
+                                </span>
+
+                            </td>
+
+                            <td class="text-center">
+
+                                <a th:href="@{/citas/ver/{id}(id=${cita.id})}"
+                                   class="btn btn-info btn-sm">
+                                    Ver
+                                </a>
+
+                                <a th:href="@{/citas/editar/{id}(id=${cita.id})}"
+                                   class="btn btn-warning btn-sm">
+                                    Editar
+                                </a>
+
+                                <a th:href="@{/citas/eliminar/{id}(id=${cita.id})}"
+                                   class="btn btn-danger btn-sm"
+                                   onclick="return confirm('¿Desea eliminar esta cita?');">
+                                    Eliminar
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </main>
+
+        <footer th:replace="~{plantillas/plantilla::footer}"></footer>
+
+    </div>
+
+</div>
+
+<div th:replace="~{plantillas/plantilla::scripts}"></div>
+
+</body>
+
+</html>

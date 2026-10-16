@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Agenda semanal - SIGCMH</title>
+
+    <link rel="stylesheet"
+          th:href="@{/bootstrap/css/bootstrap.min.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/tema/miestilo.css}">
+
+</head>
+
+
+<body>
+
+<div class="container-fluid py-4">
+
+
+    <!-- =========================
+         Título
+         ========================= -->
+
+    <div class="mb-4">
+
+        <h2>
+            Agenda semanal por consultorio
+        </h2>
+
+        <p class="text-muted">
+            Consulte las citas programadas de un consultorio durante una semana.
+        </p>
+
+    </div>
+
+
+    <!-- =========================
+         Filtros
+         ========================= -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-header">
+            Selección de agenda
+        </div>
+
+        <div class="card-body">
+
+            <form th:action="@{/reportes/agenda-semanal}"
+                  method="get">
+
+                <div class="row g-3 align-items-end">
+
+
+                    <!-- Consultorio -->
+
+                    <div class="col-md-5">
+
+                        <label for="idConsultorio"
+                               class="form-label">
+
+                            Consultorio
+
+                        </label>
+
+                        <select id="idConsultorio"
+                                name="idConsultorio"
+                                class="form-select"
+                                required>
+
+                            <option value="">
+                                Seleccione un consultorio
+                            </option>
+
+                            <option th:each="consultorio : ${consultorios}"
+                                    th:value="${consultorio.id}"
+                                    th:text="${'Consultorio ' + consultorio.numero
+                                             + ' - ' + consultorio.ubicacion}"
+                                    th:selected="${idConsultorio != null
+                                                 and consultorio.id == idConsultorio}">
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Fecha -->
+
+                    <div class="col-md-4">
+
+                        <label for="fecha"
+                               class="form-label">
+
+                            Fecha de la semana
+
+                        </label>
+
+                        <input type="date"
+                               id="fecha"
+                               name="fecha"
+                               class="form-control"
+                               th:value="${fecha}">
+
+                    </div>
+
+
+                    <!-- Buscar -->
+
+                    <div class="col-md-3">
+
+                        <button type="submit"
+                                class="btn btn-primary w-100">
+
+                            Consultar agenda
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         Información de semana
+         ========================= -->
+
+    <div th:if="${idConsultorio != null}"
+         class="card shadow-sm mb-4">
+
+        <div class="card-body">
+
+            <h5 class="mb-1">
+                Semana consultada
+            </h5>
+
+            <span th:text="${#temporals.format(inicioSemana, 'dd/MM/yyyy')}">
+                05/10/2026
+            </span>
+
+            <span>
+                al
+            </span>
+
+            <span th:text="${#temporals.format(finSemana, 'dd/MM/yyyy')}">
+                11/10/2026
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         Antes de seleccionar
+         consultorio
+         ========================= -->
+
+    <div th:if="${idConsultorio == null}"
+         class="alert alert-info">
+
+        Seleccione un consultorio y una fecha para consultar la agenda semanal.
+
+    </div>
+
+
+    <!-- =========================
+         Sin citas
+         ========================= -->
+
+    <div th:if="${idConsultorio != null
+                 and #lists.isEmpty(agenda)}"
+         class="alert alert-warning">
+
+        No existen citas registradas para este consultorio durante la semana seleccionada.
+
+    </div>
+
+
+    <!-- =========================
+         Agenda
+         ========================= -->
+
+    <div th:if="${idConsultorio != null
+                 and !#lists.isEmpty(agenda)}"
+         class="card shadow-sm">
+
+        <div class="card-header d-flex
+                    justify-content-between
+                    align-items-center">
+
+            <span>
+                Citas de la semana
+            </span>
+
+            <span class="badge bg-secondary"
+                  th:text="${#lists.size(agenda)} + ' citas'">
+
+                0 citas
+
+            </span>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table
+                              table-striped
+                              table-hover
+                              align-middle">
+
+                    <thead>
+
+                    <tr>
+
+                        <th>
+                            Día
+                        </th>
+
+                        <th>
+                            Fecha
+                        </th>
+
+                        <th>
+                            Hora
+                        </th>
+
+                        <th>
+                            Paciente
+                        </th>
+
+                        <th>
+                            Médico
+                        </th>
+
+                        <th>
+                            Especialidad
+                        </th>
+
+                        <th>
+                            Consultorio
+                        </th>
+
+                        <th>
+                            Estado
+                        </th>
+
+                        <th>
+                            Motivo
+                        </th>
+
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    <tr th:each="cita : ${agenda}">
+
+                        <!-- Día -->
+
+                        <td th:text="${#temporals.format(
+                                        cita.fechaHora,
+                                        'EEEE'
+                                      )}">
+                            lunes
+                        </td>
+
+
+                        <!-- Fecha -->
+
+                        <td th:text="${#temporals.format(
+                                        cita.fechaHora,
+                                        'dd/MM/yyyy'
+                                      )}">
+                            05/10/2026
+                        </td>
+
+
+                        <!-- Hora -->
+
+                        <td th:text="${#temporals.format(
+                                        cita.fechaHora,
+                                        'HH:mm'
+                                      )}">
+                            09:00
+                        </td>
+
+
+                        <!-- Paciente -->
+
+                        <td th:text="${cita.paciente}">
+                            Paciente
+                        </td>
+
+
+                        <!-- Médico -->
+
+                        <td th:text="${cita.medico}">
+                            Médico
+                        </td>
+
+
+                        <!-- Especialidad -->
+
+                        <td th:text="${cita.especialidad}">
+                            Especialidad
+                        </td>
+
+
+                        <!-- Consultorio -->
+
+                        <td th:text="${cita.consultorio}">
+                            101
+                        </td>
+
+
+                        <!-- Estado -->
+
+                        <td>
+
+                            <span class="badge bg-secondary"
+                                  th:text="${cita.estado}">
+                                Programada
+                            </span>
+
+                        </td>
+
+
+                        <!-- Motivo -->
+
+                        <td th:text="${cita.motivoConsulta}">
+                            Consulta
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         Navegación
+         ========================= -->
+
+    <div class="mt-4 d-flex gap-2">
+
+        <a th:if="${idConsultorio != null}"
+           th:href="@{/reportes/agenda-semanal/pdf(
+                    idConsultorio=${idConsultorio},
+                    fecha=${fecha}
+                )}"
+           class="btn btn-success">
+
+            Descargar PDF
+
+        </a>
+
+        <a th:href="@{/reportes}"
+           class="btn btn-outline-primary">
+
+            Reporte general
+
+        </a>
+
+        <a th:href="@{/}"
+           class="btn btn-outline-secondary">
+
+            Regresar al inicio
+
+        </a>
+
+    </div>
+
+
+</div>
+
+
+<script th:src="@{/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+</body>
+
+</html>

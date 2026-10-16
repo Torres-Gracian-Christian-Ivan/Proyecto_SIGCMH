@@ -1,0 +1,59 @@
+spring:
+  application:
+    name: sigcmh
+
+  messages:
+    basename: messages
+    encoding: UTF-8
+
+  thymeleaf:
+    encoding: UTF-8
+    cache: false
+    suffix: .html
+
+  datasource:
+    url: jdbc:mariadb://localhost:3309/sigcmh?useSSL=false&serverTimezone=UTC
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: root
+    password: ${DB_PASSWORD}
+
+    hikari:
+      connection-timeout: 20000
+      maximum-pool-size: 5
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    defer-datasource-initialization: true
+
+  sql:
+    init:
+      mode: never
+      schema-locations: classpath:schema_sigcmh.sql
+      data-locations: classpath:data_sigcmh.sql
+      continue-on-error: false
+
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+
+  mvc:
+    contentnegotiation:
+      favor-parameter: true
+      media-types:
+        pdf: application/pdf
+
+server:
+  port: 8090
+
+security:
+  jwt:
+    secret: ${JWT_SECRET}
+    expiration: 5000
+    refresh-expiration: 604800000

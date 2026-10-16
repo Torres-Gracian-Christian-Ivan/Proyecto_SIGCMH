@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="es">
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGCMH</title>
+    <link rel="stylesheet"
+          th:href="@{/bootstrap/css/bootstrap.min.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/tema/miestilo.css}">
+
+</head>
+
+<!-- MENÚ LATERAL -->
+<aside th:fragment="sidebar" class="sidebar">
+
+    <div class="logo">
+        <a th:href="@{/}">
+            <img th:src="@{/image/logo.png}" alt="SIGCMH">
+        </a>
+    </div>
+
+
+    <div class="sidebar-menu">
+
+        <ul>
+
+            <!-- INICIO -->
+            <li>
+                <a th:href="@{/}">
+                    Inicio
+                </a>
+            </li>
+
+
+            <li sec:authorize="isAuthenticated()">
+
+                <a href="#menuGestion"
+                   data-bs-toggle="collapse"
+                   role="button"
+                   aria-expanded="true"
+                   aria-controls="menuGestion">
+
+                    Gestión ▾
+                </a>
+
+                <div class="collapse show"
+                     id="menuGestion">
+
+                    <ul class="submenu">
+
+                        <li>
+                            <a th:href="@{/pacientes}">
+                                Pacientes
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{/medicos}">
+                                Médicos
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{/citas}">
+                                Citas
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{/reportes}">
+                                Reporte general
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{/reportes/agenda-semanal}">
+                                Agenda semanal
+                            </a>
+                        </li>
+
+                        <!-- amin -->
+                        <li sec:authorize="hasRole('ADMINISTRADOR')">
+                            <a class="nav-link"
+                               th:href="@{/usuarios}">
+                                Usuarios
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </li>
+
+        </ul>
+
+    </div>
+    <div class="sidebar-session">
+
+        <!-- sin sesion -->
+        <div sec:authorize="isAnonymous()">
+
+            <a th:href="@{/login}"
+               class="sidebar-session-link">
+
+                Iniciar sesión
+
+            </a>
+
+        </div>
+
+
+        <!-- con seson -->
+        <div sec:authorize="isAuthenticated()">
+
+            <div class="sidebar-user">
+
+                <small>
+                    Sesión iniciada como
+                </small>
+
+                <strong sec:authentication="name">
+                    usuario
+                </strong>
+
+            </div>
+
+            <form th:action="@{/doLogout}"
+                  method="post">
+
+                <button type="submit"
+                        class="btn btn-outline-light">
+                    Cerrar sesión
+                </button>
+
+            </form>
+
+
+        </div>
+
+    </div>
+
+</aside>
+
+<header th:fragment="header"
+        class="header d-flex justify-content-between align-items-center">
+
+    <h1>
+        Sistema de Gestión de Citas Médicas Hospitalarias
+    </h1>
+
+</header>
+<footer th:fragment="footer" class="footer">
+    <hr>
+    <h5>
+        Sistema de Gestión de Citas Médicas Hospitalarias
+    </h5>
+    <p>
+        Facultad de Ingeniería - UNAM
+    </p>
+
+    <p>
+        Diplomado Java UNAM · Módulo 9 · Spring Security
+    </p>
+</footer>
+
+<div th:fragment="scripts">
+    <script th:src="@{/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/bootstrap/js/jquery-3.6.2.js}"></script>
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function(){
+            const alerta=document.getElementById("alertMessage");
+            if(alerta){
+                setTimeout(function(){
+                    bootstrap.Alert
+                        .getOrCreateInstance(alerta)
+                        .close();
+                },3000);
+            }
+        });
+    </script>
+</div>
+</html>

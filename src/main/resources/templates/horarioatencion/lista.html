@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="es">
+
+<head th:replace="~{plantillas/plantilla::head}"></head>
+
+<body>
+
+<div class="wrapper">
+
+    <aside th:replace="~{plantillas/plantilla::sidebar}"></aside>
+
+    <div class="content">
+
+        <header th:replace="~{plantillas/plantilla::header}"></header>
+
+        <main class="main-content">
+
+            <div class="card shadow">
+
+                <div class="card-body">
+
+                    <h2>
+                        <i class="bi bi-clock-fill"></i>
+                        Horarios de atención
+                    </h2>
+
+                    <p class="text-muted">
+                        Horarios correspondientes a:
+                        <strong th:text="${nombreMedico}"></strong>
+                    </p>
+
+                    <hr>
+
+
+                    <div th:if="${success}"
+                         class="alert alert-success"
+                         th:text="${success}">
+                    </div>
+
+                    <div th:if="${error}"
+                         class="alert alert-danger"
+                         th:text="${error}">
+                    </div>
+
+
+                    <!-- Slo admin-->
+                    <div class="mb-3 text-end"
+                         sec:authorize="hasRole('ADMINISTRADOR')">
+
+                        <a th:href="@{/medicos/{idMedico}/horarios/nuevo(idMedico=${idMedico})}"
+                           class="btn btn-success">
+
+                            <i class="bi bi-plus-circle"></i>
+                            Nuevo horario
+
+                        </a>
+
+                    </div>
+
+
+                    <table class="table table-hover table-bordered align-middle">
+
+                        <thead class="table-primary">
+
+                        <tr>
+
+                            <th>ID</th>
+                            <th>Día</th>
+                            <th>Hora inicio</th>
+                            <th>Hora fin</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+
+                        </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                        <tr th:each="horario : ${horarios}">
+
+                            <td th:text="${horario.id}"></td>
+
+                            <td th:text="${diasSemana[horario.diaSemana]}"></td>
+
+                            <td th:text="${horario.horaInicio}"></td>
+
+                            <td th:text="${horario.horaFin}"></td>
+
+                            <td>
+
+                                <span th:if="${horario.activo}"
+                                      class="badge bg-success">
+                                    Activo
+                                </span>
+
+                                <span th:unless="${horario.activo}"
+                                      class="badge bg-secondary">
+                                    Inactivo
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <!-- AMBOS -->
+                                <a class="btn btn-info btn-sm"
+                                   th:href="@{/medicos/{idMedico}/horarios/ver/{idHorario}
+                                   (idMedico=${idMedico},
+                                   idHorario=${horario.id})}">
+
+                                    Ver
+
+                                </a>
+
+
+                                <!-- SOLO ADMIN -->
+                                <a sec:authorize="hasRole('ADMINISTRADOR')"
+                                   class="btn btn-warning btn-sm"
+                                   th:href="@{/medicos/{idMedico}/horarios/editar/{idHorario}
+                                   (idMedico=${idMedico},
+                                   idHorario=${horario.id})}">
+
+                                    Editar
+
+                                </a>
+
+
+                                <!-- SOLO ADMIN -->
+                                <form sec:authorize="hasRole('ADMINISTRADOR')"
+                                      th:action="@{/medicos/{idMedico}/horarios/eliminar/{idHorario}
+                                      (idMedico=${idMedico},
+                                      idHorario=${horario.id})}"
+                                      method="post"
+                                      class="d-inline">
+
+                                    <button type="submit"
+                                            class="btn btn-danger btn-sm"
+                                            onclick="return confirm('¿Desea eliminar este horario?');">
+
+                                        Eliminar
+
+                                    </button>
+
+                                </form>
+
+                            </td>
+
+                        </tr>
+
+
+                        <tr th:if="${#lists.isEmpty(horarios)}">
+
+                            <td colspan="6"
+                                class="text-center text-muted">
+
+                                No existen horarios registrados para este médico.
+
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+
+                    <a th:href="@{/medicos}"
+                       class="btn btn-secondary">
+
+                        Regresar a médicos
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </main>
+
+        <footer th:replace="~{plantillas/plantilla::footer}"></footer>
+
+    </div>
+
+</div>
+
+<div th:replace="~{plantillas/plantilla::scripts}"></div>
+
+</body>
+</html>

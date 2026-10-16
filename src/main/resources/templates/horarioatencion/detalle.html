@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="es">
+
+<head th:replace="~{plantillas/plantilla::head}"></head>
+
+<body>
+
+<div class="wrapper">
+
+    <aside th:replace="~{plantillas/plantilla::sidebar}"></aside>
+
+    <div class="content">
+
+        <header th:replace="~{plantillas/plantilla::header}"></header>
+
+        <main class="main-content">
+
+            <div class="card shadow">
+
+                <div class="card-body">
+
+                    <h2>
+                        <i class="bi bi-clock-history"></i>
+                        Detalle del horario
+                    </h2>
+
+                    <hr>
+
+
+                    <div class="row">
+
+
+                        <div class="col-md-6 mb-3">
+
+                            <strong>Médico:</strong>
+
+                            <p th:text="${horario.nombreMedico}"></p>
+
+                        </div>
+
+
+                        <div class="col-md-6 mb-3">
+
+                            <strong>Día:</strong>
+
+                            <p th:text="${diasSemana[horario.diaSemana]}"></p>
+
+                        </div>
+
+
+                        <div class="col-md-6 mb-3">
+
+                            <strong>Hora de inicio:</strong>
+
+                            <p th:text="${horario.horaInicio}"></p>
+
+                        </div>
+
+
+                        <div class="col-md-6 mb-3">
+
+                            <strong>Hora de finalización:</strong>
+
+                            <p th:text="${horario.horaFin}"></p>
+
+                        </div>
+
+
+                        <div class="col-md-6 mb-3">
+
+                            <strong>Estado:</strong>
+
+                            <p>
+
+                                <span th:if="${horario.activo}"
+                                      class="badge bg-success">
+
+                                    Activo
+
+                                </span>
+
+                                <span th:unless="${horario.activo}"
+                                      class="badge bg-secondary">
+
+                                    Inactivo
+
+                                </span>
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <a th:href="@{/medicos/{idMedico}/horarios(idMedico=${idMedico})}"
+                       class="btn btn-secondary">
+
+                        Regresar
+
+                    </a>
+
+
+                    <a sec:authorize="hasRole('ADMINISTRADOR')"
+                       th:href="@{/medicos/{idMedico}/horarios/editar/{idHorario}
+                       (idMedico=${idMedico},
+                       idHorario=${horario.id})}"
+                       class="btn btn-warning">
+
+                        Editar
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </main>
+
+        <footer th:replace="~{plantillas/plantilla::footer}"></footer>
+
+    </div>
+
+</div>
+
+<div th:replace="~{plantillas/plantilla::scripts}"></div>
+
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Detalle de usuario - SIGCMH</title>
+
+    <link rel="stylesheet"
+          th:href="@{/bootstrap/css/bootstrap.min.css}">
+
+</head>
+
+<body>
+
+<div class="container mt-4">
+
+    <div class="card">
+
+        <div class="card-header">
+
+            <h4 class="mb-0">
+                Detalle del usuario
+            </h4>
+
+        </div>
+
+
+        <div class="card-body">
+
+
+            <dl class="row">
+
+
+                <dt class="col-sm-3">
+                    ID
+                </dt>
+
+                <dd class="col-sm-9"
+                    th:text="${usuario.id}">
+                </dd>
+
+
+                <dt class="col-sm-3">
+                    Nombre
+                </dt>
+
+                <dd class="col-sm-9"
+                    th:text="${usuario.nombreCompleto}">
+                </dd>
+
+
+                <dt class="col-sm-3">
+                    Correo
+                </dt>
+
+                <dd class="col-sm-9"
+                    th:text="${usuario.email}">
+                </dd>
+
+
+                <dt class="col-sm-3">
+                    Perfil
+                </dt>
+
+                <dd class="col-sm-9"
+                    th:text="${usuario.perfil}">
+                </dd>
+
+
+                <dt class="col-sm-3">
+                    Estado
+                </dt>
+
+                <dd class="col-sm-9">
+
+                    <span th:if="${usuario.activo}"
+                          class="badge bg-success">
+
+                        Activo
+
+                    </span>
+
+
+                    <span th:unless="${usuario.activo}"
+                          class="badge bg-secondary">
+
+                        Inactivo
+
+                    </span>
+
+                </dd>
+
+            </dl>
+
+
+            <div class="d-flex gap-2">
+
+                <a th:href="@{/usuarios/editar/{id}
+                    (id=${usuario.id})}"
+                   class="btn btn-warning">
+
+                    Editar
+
+                </a>
+
+
+                <a th:href="@{/usuarios}"
+                   class="btn btn-secondary">
+
+                    Regresar
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

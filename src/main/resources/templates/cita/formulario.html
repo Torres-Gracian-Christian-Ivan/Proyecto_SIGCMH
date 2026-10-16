@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head th:replace="~{plantillas/plantilla::head}"></head>
+
+<body>
+
+<div class="wrapper">
+
+    <aside th:replace="~{plantillas/plantilla::sidebar}"></aside>
+
+    <div class="content">
+
+        <header th:replace="~{plantillas/plantilla::header}"></header>
+
+        <main class="main-content">
+
+            <div class="card shadow">
+
+                <div class="card-header">
+
+                    <h3>
+                        <i class="bi bi-calendar-plus"></i>
+
+                        <span th:if="${cita.id == null}">
+                            Registrar cita médica
+                        </span>
+
+                        <span th:unless="${cita.id == null}">
+                            Editar cita médica
+                        </span>
+
+                    </h3>
+
+                </div>
+
+                <div class="card-body">
+
+                    <form th:object="${cita}"
+
+                          th:action="${cita.id == null} ?
+                          @{/citas/guardar} :
+                          @{/citas/actualizar}"
+
+                          method="post">
+
+                        <input type="hidden"
+                               th:field="*{id}">
+
+                        <div class="row">
+
+                            <!-- Paciente -->
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+                                    Paciente
+                                </label>
+
+                                <select class="form-select"
+                                        th:field="*{idPaciente}">
+
+                                    <option value="">
+                                        Seleccione un paciente
+                                    </option>
+
+                                    <option th:each="paciente : ${pacientes}"
+                                            th:value="${paciente.idPaciente}"
+                                            th:text="${paciente.nombreCompleto}">
+                                    </option>
+
+                                </select>
+
+                                <div class="text-danger"
+                                     th:errors="*{idPaciente}">
+                                </div>
+
+                            </div>
+
+                            <!-- Médico -->
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+
+                                    Médico
+
+                                </label>
+
+                                <select class="form-select"
+                                        th:field="*{idMedico}">
+
+                                    <option value="">
+                                        Seleccione un médico
+                                    </option>
+
+                                    <option th:each="medico : ${medicos}"
+                                            th:value="${medico.id}"
+                                            th:text="${medico.nombreCompleto}">
+                                    </option>
+
+                                </select>
+
+                                <div class="text-danger"
+                                     th:errors="*{idMedico}">
+                                </div>
+
+                            </div>
+
+                            <!-- Fecha -->
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+                                    Fecha y hora
+                                </label>
+
+                                <input type="datetime-local"
+
+                                       class="form-control"
+
+                                       th:field="*{fechaHora}">
+
+                                <div class="text-danger"
+                                     th:errors="*{fechaHora}">
+                                </div>
+
+                            </div>
+
+                            <!-- Estado -->
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+
+                                    Estado
+
+                                </label>
+
+                                <select class="form-select"
+                                        th:field="*{idEstado}">
+
+                                    <option value="">
+                                        Seleccione un estado
+                                    </option>
+
+                                    <option th:each="estado : ${estados}"
+                                            th:value="${estado.id}"
+                                            th:text="${estado.nombre}">
+                                    </option>
+
+                                </select>
+
+                                <div class="text-danger"
+                                     th:errors="*{idEstado}">
+                                </div>
+
+                            </div>
+
+                            <!-- Usuario -->
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+                                    Usuario que registra
+                                </label>
+
+                                <select class="form-select"
+                                        th:field="*{idUsuarioCreador}">
+
+                                    <option value="">
+                                        Seleccione un usuario
+                                    </option>
+
+                                    <option th:each="usuario : ${usuarios}"
+                                            th:value="${usuario.id}"
+                                            th:text="${usuario.nombreCompleto}">
+                                    </option>
+
+                                </select>
+
+                                <div class="text-danger"
+                                     th:errors="*{idUsuarioCreador}">
+                                </div>
+
+                            </div>
+
+                            <!-- Motivo -->
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+
+                                    Motivo de consulta
+
+                                </label>
+
+                                <input type="text"
+
+                                       class="form-control"
+
+                                       th:field="*{motivoConsulta}">
+
+                                <div class="text-danger"
+                                     th:errors="*{motivoConsulta}">
+                                </div>
+
+                            </div>
+
+                            <!-- Observaciones -->
+
+                            <div class="col-12 mb-3">
+
+                                <label class="form-label">
+
+                                    Observaciones
+
+                                </label>
+
+                                <textarea class="form-control"
+
+                                          rows="4"
+
+                                          th:field="*{observaciones}">
+                                </textarea>
+
+                                <div class="text-danger"
+                                     th:errors="*{observaciones}">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <hr>
+
+                        <button type="submit"
+                                class="btn btn-success">
+
+                            <i class="bi bi-floppy"></i>
+
+                            Guardar
+
+                        </button>
+
+                        <a th:href="@{/citas}"
+                           class="btn btn-secondary">
+
+                            <i class="bi bi-arrow-left"></i>
+
+                            Cancelar
+
+                        </a>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </main>
+
+        <footer th:replace="~{plantillas/plantilla::footer}"></footer>
+
+    </div>
+
+</div>
+
+<div th:replace="~{plantillas/plantilla::scripts}"></div>
+
+</body>
+
+</html>

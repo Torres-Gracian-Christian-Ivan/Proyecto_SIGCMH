@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head th:replace="~{plantillas/plantilla :: head}"></head>
+
+<body>
+<div class="wrapper">
+    <aside th:replace="~{plantillas/plantilla :: sidebar}"></aside>
+    <div class="content">
+        <header th:replace="~{plantillas/plantilla :: header}"></header>
+        <main class="main-content">
+            <div class="card shadow">
+                <div class="card-body">
+                    <!--  <h2 th:text="${mensaje}"></h2> -->
+                    <h2 th:text="${mensaje ?: 'Bienvenido a SIGCMH'}"></h2>
+
+                    <hr>
+                    <p>
+                        <strong>Fecha:</strong>
+                        <span th:text="${fecha}"></span>
+                    </p>
+                    <p class="mt-3">
+                        Bienvenido al <strong>Sistema de Gestión de Citas Médicas Hospitalarias (SIGCMH)</strong>.
+                        Desde esta plataforma podrá administrar la información relacionada con pacientes,
+                        médicos, citas médicas y usuarios del sistema.
+                    </p>
+
+                    <h4 class="mt-4 mb-3">
+                        Resumen del sistema
+                    </h4>
+
+                    <div class="row">
+
+                        <div class="col-md-3 mb-3">
+                            <div class="card text-center shadow-sm h-100">
+                                <div class="card-body">
+
+                                    <!--<h2 th:text="${pacientes}"></h2>-->
+                                    <h2 th:text="${pacientes ?: 0}"></h2>
+                                    <p>Pacientes registrados</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 mb-3">
+                            <div class="card text-center shadow-sm h-100">
+                                <div class="card-body">
+                                    <!--<h2 th:text="${medicos}"></h2>-->
+                                    <h2 th:text="${medicos ?: 0}"></h2>
+                                    <p>Médicos registrados</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 mb-3">
+                            <div class="card text-center shadow-sm h-100">
+                                <div class="card-body">
+                                    <!-- <h2 th:text="${citas}"></h2>-->
+                                    <h2 th:text="${citas ?: 0}"></h2>
+                                    <p>Citas programadas</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 mb-3">
+                            <div class="card text-center shadow-sm h-100">
+                                <div class="card-body">
+                                    <!-- <h2 th:text="${usuarios}"></h2>-->
+                                    <h2 th:text="${usuarios ?: 0}"></h2>
+                                    <p>Usuarios del sistema</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer th:replace="~{plantillas/plantilla :: footer}"></footer>
+
+    </div>
+</div>
+<div th:replace="~{plantillas/plantilla :: scripts}"></div>
+</body>
+</html>
